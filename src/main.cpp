@@ -115,6 +115,86 @@ sil::Image rgb_split(const sil::Image &image)
     return new_image;
 }
 
+void brightness(sil::Image &image)
+{
+    float power = 0.5;
+
+    for (glm::vec3 &color : image.pixels())
+    {
+        color = glm::pow(color, glm::vec3(power));
+    }
+}
+
+void disk(sil::Image &image)
+{
+    float radius = 100;
+
+    for (int x = 0; x < image.width(); x++)
+    {
+        for (int y = 0; y < image.height(); y++)
+        {
+            glm::vec2 position{x, y};
+            float distance = glm::length(position - glm::vec2(image.width() / 2, image.height() / 2));
+
+            if (distance <= radius)
+            {
+                image.pixel(x, y) = glm::vec3(1);
+            }
+            else
+            {
+                image.pixel(x, y) = glm::vec3(0);
+            }
+        }
+    }
+}
+
+void circle(sil::Image &image)
+{
+    float radius = 100;
+    float thickness = 10;
+
+    for (int x = 0; x < image.width(); x++)
+    {
+        for (int y = 0; y < image.height(); y++)
+        {
+            glm::vec2 position{x, y};
+            float distance = glm::length(position - glm::vec2(image.width() / 2, image.height() / 2));
+
+            if (radius - thickness <= distance && distance <= radius)
+            {
+                image.pixel(x, y) = glm::vec3(1);
+            }
+            else
+            {
+                image.pixel(x, y) = glm::vec3(0);
+            }
+        }
+    }
+}
+
+void animation(sil::Image &image)
+{
+    float radius = 100;
+
+    for (int x = 0; x < image.width(); x++)
+    {
+        for (int y = 0; y < image.height(); y++)
+        {
+            glm::vec2 position{x, y};
+            float distance = glm::length(position - glm::vec2(x, image.height() / 2));
+
+            if (distance <= radius)
+            {
+                image.pixel(x, y) = glm::vec3(1);
+            }
+            else
+            {
+                image.pixel(x, y) = glm::vec3(0);
+            }
+        }
+    }
+}
+
 int main()
 {
     {
@@ -169,5 +249,29 @@ int main()
         sil::Image image{"images/logo.png"};
         sil::Image new_image = rgb_split(image);
         new_image.save("output/rgb_split.png");
+    }
+
+    {
+        sil::Image image{"images/photo.jpg"};
+        brightness(image);
+        image.save("output/brightness.jpg");
+    }
+
+    {
+        sil::Image image{500, 500};
+        disk(image);
+        image.save("output/disk.png");
+    }
+
+    {
+        sil::Image image{500, 500};
+        circle(image);
+        image.save("output/circle.png");
+    }
+
+    {
+        sil::Image image{500, 500};
+        animation(image);
+        image.save("output/animation.png");
     }
 }
