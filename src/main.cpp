@@ -151,7 +151,7 @@ void disk(sil::Image &image)
 void circle(sil::Image &image)
 {
     float radius = 100;
-    float thickness = 10;
+    float thickness = 5;
 
     for (int x = 0; x < image.width(); x++)
     {
@@ -176,22 +176,54 @@ void animation(sil::Image &image)
 {
     float radius = 100;
 
-    for (int x = 0; x < image.width(); x++)
+    for (int center = 0; center < image.width(); center += 20)
     {
-        for (int y = 0; y < image.height(); y++)
+        for (int x = 0; x < image.width(); x++)
         {
-            glm::vec2 position{x, y};
-            float distance = glm::length(position - glm::vec2(x, image.height() / 2));
+            for (int y = 0; y < image.height(); y++)
+            {
+                glm::vec2 position{x, y};
+                float distance = glm::length(position - glm::vec2(center, image.height() / 2));
 
-            if (distance <= radius)
-            {
-                image.pixel(x, y) = glm::vec3(1);
-            }
-            else
-            {
-                image.pixel(x, y) = glm::vec3(0);
+                if (distance <= radius)
+                {
+                    image.pixel(x, y) = glm::vec3(1);
+                }
+                else
+                {
+                    image.pixel(x, y) = glm::vec3(0);
+                }
             }
         }
+
+        int frame_number = center / 20;
+        image.save("output/animation/animation" + std::to_string(frame_number) + ".png");
+    }
+}
+
+void rosace(sil::Image &image)
+{
+    float radius = 100;
+    float thickness = 5;
+    float angle = 0;
+
+    for (int i = 0; i < 6; i++)
+    {
+        for (int x = 0; x < image.width(); x++)
+        {
+            for (int y = 0; y < image.height(); y++)
+            {
+                glm::vec2 position{x, y};
+                float distance = glm::length(position - glm::vec2(image.width() / 2 + radius * cos(glm::radians(angle)), image.height() / 2 + radius * sin(glm::radians(angle))));
+
+                if (radius - thickness <= distance && distance <= radius)
+                {
+                    image.pixel(x, y) = glm::vec3(1);
+                }
+            }
+        }
+
+        angle += 60;
     }
 }
 
@@ -272,6 +304,11 @@ int main()
     {
         sil::Image image{500, 500};
         animation(image);
-        image.save("output/animation.png");
+    }
+
+    {
+        sil::Image image{"output/circle.png"};
+        rosace(image);
+        image.save("output/rosace.png");
     }
 }
