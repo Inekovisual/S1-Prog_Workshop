@@ -227,6 +227,29 @@ void rosace(sil::Image &image)
     }
 }
 
+void glitch(sil::Image &image)
+{
+    for (int k = 0; k < 20; k++)
+    {
+        int rectangle_width = random_int(20, 50);
+        int rectangle_height = random_int(5, 10);
+
+        int x = random_int(0, image.width() - (rectangle_width + 1));
+        int y = random_int(0, image.height() - (rectangle_height + 1));
+
+        int other_x = random_int(0, image.width() - (rectangle_width + 1));
+        int other_y = random_int(0, image.height() - (rectangle_height + 1));
+
+        for (int i = 0; i < rectangle_width; i++)
+        {
+            for (int j = 0; j < rectangle_height; j++)
+            {
+                std::swap(image.pixel(x + i, y + j), image.pixel(other_x + i, other_y + j));
+            }
+        }
+    }
+}
+
 int main()
 {
     {
@@ -310,5 +333,11 @@ int main()
         sil::Image image{"output/circle.png"};
         rosace(image);
         image.save("output/rosace.png");
+    }
+
+    {
+        sil::Image image{"images/logo.png"};
+        glitch(image);
+        image.save("output/glitch.png");
     }
 }

@@ -55,3 +55,8 @@ Le point sur lequel j’ai bloqué est que je n’avais pas pensé à faire une 
 J’ai cherché comment passer de coordonnées polaires (angle et rayon) à des coordonnées cartésiennes (x et y), ce qui m’a permis d’utiliser `x = r × cos(θ) et y = r × sin(θ)` pour placer les centres des cercles et calculer la distance. J’ai aussi dû faire attention à ne pas effacer les cercles déjà tracés avec un else qui remet en noir, à répartir les angles sur 360° (60° pour 6 cercles), et à bien gérer les conversions `int` et `float` pour éviter les erreurs de compilation.
 
 ![alt text](output/rosace.png)
+
+## Glitch
+J’ai rencontré plusieurs difficultés pour cet effet, notamment dans la génération des coordonnées aléatoires et la gestion des limites de l’image, ce qui provoquait des dépassements de pixels et des erreurs lors de l’exécution du programme.
+
+![alt text](output/glitch.png)
