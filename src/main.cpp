@@ -67,7 +67,7 @@ void noisy_image(sil::Image &image)
     {
         for (int y = 0; y < image.height(); y++)
         {
-            if (true_with_probability(0.3))
+            if (true_with_probability(0.2))
             {
                 image.pixel(x, y) = glm::vec3(random_float(0, 1), random_float(0, 1), random_float(0, 1));
             }
@@ -83,7 +83,7 @@ sil::Image rotation(sil::Image &image)
     {
         for (int y = 0; y < image.height(); y++)
         {
-            int new_x = image.height() - 1 - y;
+            int new_x = image.height() - (y + 1);
             int new_y = x;
             new_image.pixel(new_x, new_y) = image.pixel(x, y);
         }
